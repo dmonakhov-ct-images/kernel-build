@@ -1,0 +1,29 @@
+FROM centos:7
+MAINTAINER dmonakhov@gmail.com
+
+# install centos packages
+RUN yum -y update && \
+    yum install -y epel-release && \
+    pkg_list="binutils \
+    bc \
+    make \
+    gcc \
+    perl \
+    openssl-devel \
+    elfutils-libelf-devel \
+    kernel-headers \
+    # TODO: ncurses-dev is not mandatory for automated build env
+    ncurses-devel \
+    sed \
+    # tools
+    zstd \
+    tar \
+    git \
+    pigz"  && \
+    for p in ${pkg_list};do \
+        yum install -y $p || exit 1; \
+    done  && \
+    # Replace gzip with pigz for perfomance
+    unlink /bin/gzip && \
+    ln /usr/bin/pigz  /bin/gzip && \
+    yum clean all

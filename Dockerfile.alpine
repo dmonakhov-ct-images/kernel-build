@@ -1,0 +1,28 @@
+FROM alpine
+MAINTAINER dmonakhov@gmail.com
+
+# install alpine packages
+RUN apk add --no-cache --update \
+    # build essentials
+    #abuild \
+    musl-dev \
+    bc \
+    binutils \
+    #build-base \
+    make \
+    gcc \
+    perl \
+    openssl-dev \
+    libelf-dev \
+    linux-headers \
+    # TODO: ncurses-dev is not mandatory for automated build env
+    ncurses-dev \
+    sed \
+    # tools
+    zstd \
+    tar \
+    git \
+    pigz  && \
+    # Replace gzip with pigz for perfomance
+    unlink /bin/gzip && \
+    ln /usr/bin/pigz  /bin/gzip

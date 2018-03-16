@@ -27,3 +27,7 @@ RUN yum -y update && \
     unlink /bin/gzip && \
     ln /usr/bin/pigz  /bin/gzip && \
     yum clean all
+
+COPY common-install.sh /common-install.sh
+RUN /bin/sh -xe /common-install.sh && \
+    unlink /common-install.sh

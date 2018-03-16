@@ -8,6 +8,7 @@ RUN apk add --no-cache --update \
     musl-dev \
     bc \
     binutils \
+    bash \
     #build-base \
     make \
     gcc \
@@ -26,3 +27,7 @@ RUN apk add --no-cache --update \
     # Replace gzip with pigz for perfomance
     unlink /bin/gzip && \
     ln /usr/bin/pigz  /bin/gzip
+
+COPY common-install.sh /common-install.sh
+RUN /bin/sh -xe /common-install.sh && \
+    unlink /common-install.sh

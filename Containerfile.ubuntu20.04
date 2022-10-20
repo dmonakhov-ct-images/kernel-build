@@ -1,0 +1,36 @@
+FROM ubuntu:20.04
+MAINTAINER dmonakhov@gmail.com
+
+# install base packages alpine packages
+RUN apt-get update -y && \
+    apt-get install -y \
+	    bc \
+	    bison \
+    	    #build-essential \
+	    flex \
+	    libelf-dev \
+	    binutils \
+	    bash \
+	    gcc \
+	    make \
+    	    libcrypt-dev \
+            #linux-headers \
+	    perl \
+            sed \
+            #TODO: ncurses-dev is not mandatory for automated build env
+	    ncurses-dev \
+            # tools
+            zstd \
+            tar \
+            git \
+            pigz  && \
+    # Replace gzip with pigz for perfomance resons
+    unlink /bin/gzip && ln /usr/bin/pigz  /bin/gzip && \
+    # Cleanup apt
+    apt-get clean autoclean && \
+    apt-get autoremove -y && \
+    rm -rf /var/lib/{apt,dpkg,cache,log}
+
+COPY common-install.sh /common-install.sh
+RUN /bin/sh -xe /common-install.sh && \
+    unlink /common-install.sh
